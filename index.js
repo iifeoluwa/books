@@ -5,7 +5,7 @@ const jsend = require("jsend");
 
 const router = require("./routes");
 const { server } = require("./config");
-import { sequelize } from './models';
+const { sequelize } = require('./models');
 
 const app = express();
 
