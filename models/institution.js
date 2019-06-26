@@ -15,6 +15,10 @@ const institution = (sequelize, DataTypes) => {
       },
     }, {
         timestamps: true,
+        indexes: [{
+            unique: true,
+            fields: ['domain']
+          }]
     });
   
     Institution.associate = models => {
@@ -24,4 +28,4 @@ const institution = (sequelize, DataTypes) => {
     return Institution;
 };
 
-export default institution;
+module.exports = institution;

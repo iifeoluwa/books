@@ -12,6 +12,12 @@ if (db.url) {
       });   
 }
 
+const models = {
+    User: sequelize.import('./user'),
+    Book: sequelize.import('./book'),
+    Institution: sequelize.import('./institution'),
+};
+
 Object.keys(models).forEach(key => {
     if ('associate' in models[key]) {
       models[key].associate(models);
@@ -19,5 +25,8 @@ Object.keys(models).forEach(key => {
 });
 
 module.exports = {
-    sequelize
+    sequelize,
+    User: models.User,
+    Book: models.Book,
+    Institution: models.Institution
 }

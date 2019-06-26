@@ -21,4 +21,4 @@ const book = (sequelize, DataTypes) => {
     return Book;
 };
 
-export default book;
+module.exports = book;
