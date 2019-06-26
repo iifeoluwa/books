@@ -19,7 +19,7 @@ app.use(jsend.middleware);
 // Register app Routes
 app.use(router);
 
-sequelize.sync().then(() => {
+sequelize.sync({force: true}).then(() => {
     app.listen(server.port, () => console.log(`Server listening at ${server.port}`));
 });
 
