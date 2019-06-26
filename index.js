@@ -1,8 +1,23 @@
+const bodyParser = require('body-parser');
 const express = require('express');
+const helmet = require('helmet');
+const jsend = require("jsend");
+
+const router = require("./routes");
+const { server } = require("./config");
+
 const app = express();
 
-const router = require('./routes');
+// Body parser and helmet middleware
+app.use(helmet());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-router.register(app);
+app.use(jsend.middleware);
 
-app.listen(3000, () => console.log(`Open http://localhost:3000 to see a response.`));
+// Register app Routes
+app.use(router);
+
+app.listen(server.port, () => console.log(`Server listening at ${server.port}`));
+
+module.exports = app;
