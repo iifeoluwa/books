@@ -5,6 +5,7 @@ const jsend = require("jsend");
 
 const router = require("./routes");
 const { server } = require("./config");
+import { sequelize } from './models';
 
 const app = express();
 
@@ -18,6 +19,8 @@ app.use(jsend.middleware);
 // Register app Routes
 app.use(router);
 
-app.listen(server.port, () => console.log(`Server listening at ${server.port}`));
+sequelize.sync().then(() => {
+    app.listen(server.port, () => console.log(`Server listening at ${server.port}`));
+});
 
 module.exports = app;
