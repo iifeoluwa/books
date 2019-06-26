@@ -1,5 +1,13 @@
+const uuid = require('uuidv4');
+
 const book = (sequelize, DataTypes) => {
     const Book = sequelize.define('book', {
+      id: {
+        allowNull: false,
+        primaryKey: true,
+        type: DataTypes.UUID,
+        defaultValue: uuid()
+      },
       isbn: {
         type: DataTypes.STRING,
         unique: true,
