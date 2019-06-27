@@ -1,4 +1,4 @@
-const uuid = require('uuidv4');
+'use strict';
 
 const book = (sequelize, DataTypes) => {
     const Book = sequelize.define('book', {
@@ -6,10 +6,10 @@ const book = (sequelize, DataTypes) => {
         allowNull: false,
         primaryKey: true,
         type: DataTypes.UUID,
-        defaultValue: uuid()
+        defaultValue: DataTypes.UUIDV4
       },
       isbn: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         unique: true,
       },
       title: {
@@ -21,10 +21,6 @@ const book = (sequelize, DataTypes) => {
     }, {
         timestamps: true,
     });
-  
-    Book.associate = models => {
-        Book.belongsToMany(models.Institution, {through: 'InstitutionBooks'});
-    };
   
     return Book;
 };
