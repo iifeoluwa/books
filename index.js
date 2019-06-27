@@ -5,9 +5,11 @@ const jsend = require("jsend");
 
 const router = require("./routes");
 const { server } = require("./config");
-const { sequelize } = require('./models');
+const { sequelize, createInitialInstitution } = require('./models');
 
 const app = express();
+
+require('./middleware/passport');
 
 // Body parser and helmet middleware
 app.use(helmet());
@@ -20,6 +22,8 @@ app.use(jsend.middleware);
 app.use(router);
 
 sequelize.sync({force: true}).then(() => {
+    createInitialInstitution();
+    
     app.listen(server.port, () => console.log(`Server listening at ${server.port}`));
 });
 
