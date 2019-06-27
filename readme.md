@@ -1,54 +1,43 @@
-# Express Coding Challenge
-The premise of this challenge is to see the approach you take to:
-- Use an ORM to interact with a simple database model
-- Create a basic routing mechanism for HTTP requests
-- Authenticate a user’s access to a route
-- Respond to a request in a consistent and logical manner
-- Test your work with both unit tests and integration tests.
+# The Books Service
+This repository contains a service that registers users and produces list of books available to them through their institutions.
 
-Please clone this repository and send through your completed coding challenge using whatever you feel fit. We'll take a look and then have a chat about the decisions you took and challenges you encountered. Thanks for taking the time.
+## Instructions
+A dummy institution has been created, loaded with few books so as to show the endpoints at work. The domain for this institution is `harvard.edu`.
 
-## Challenge
-1. Use [Sequelize](http://docs.sequelizejs.com/manual/installation/getting-started) or [Mongoose](https://mongoosejs.com/) to define:
+It is recommended to perform service requests using [Postman](https://www.getpostman.com). 
 
-   1.1. A **`User`** model which should have basic identifying information:
-      - Name
-      - Email address
-      - Role (Acceptable entries: ‘student’, ‘academic’, ‘administrator’)
-      - Password.
+#### How To Run 
+1. Clone this repository into a new directory.
+2. Open a terminal window in the directory where the project was cloned.
+3. Run `npm install` to install needed dependencies.
+4. Run `npm start" to start the app.
+4. Visit `localhost:3000` to access the running service.
 
-   1.2. An **`Institution`** model which stores information about a school:
-      - Name
-      - URL
-      - Email domain.
-      
-   1.3. A **`Book`** model which stores information about books:
-      - ISBN
-      - Title
-      - Author.
-      
-   1.4. Relationships between **`Users`** and **`Institutions`**, and **`Books`** and **`Institutions`** (Consider #4.3 in the relationships you create).
-2. Use [Express](https://expressjs.com/) to respond to requests.
-3. Create a test suite which includes code coverage, to unit and integration test the routes you’ve created.
-4. Create routes:
+#### The /users/create endpoint
+Sample Request Body: 
 
-    4.1 `POST /users/signin` Use the passport library to authenticate a user and respond with a successful message that uses the [JSend](https://labs.omniti.com/labs/jsend) framework
-    
-    4.2 `POST /users/create` Creates a user and based on the user’s email domain links them to an institution. Denies creation of a user if their domain does not exist.
-    
-    4.3 `GET /books` Once authenticated, responds with a JSON object containing a list of Books that the user has access to via their Institution.
-5. (Optional) Provide a [Postman](https://www.getpostman.com/) collection which performs some basically functionality on the routes you've created.
+```
+{
+	"name": "Mary John",
+	"email": "student@harvard.edu",
+	"password": "reallystrongpassword2"
+}
+```
+#### The /user/signin endpoint
+Sample Request Body: 
 
-## Things to keep in mind
-- Security
-- Scalability
-- Consistency
-- Testing.
+```
+{
+	"email": "student@harvard.edu",
+	"password": "reallystrongpassword2"
+}
+```
+#### The /books endpoint
+This endpoint requires the token generated at the `users/signin` endpoint. Add this token to the `Authorization` header as a `Bearer` token.
 
-## Running this application
-You can run the application by typing:
-`npm install` followed by `npm start` 
+#### Running Tests
+From the root of the app directory, run this command;
 
-## The structure of this repository
-The structure of this repository should be relatively self-explanatory. 
-Use the appropriate directory for your code. A basic example has been provided for the index route.
+      npm run test
+
+:)

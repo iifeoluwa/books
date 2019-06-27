@@ -1,0 +1,230 @@
+{
+	"info": {
+		"_postman_id": "98ac2f1b-3dcf-4a4b-abcd-1c50171e81e8",
+		"name": "Biblio",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create User",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"A Student\",\n\t\"email\": \"student@harvard.edu\",\n\t\"password\": \"reallystrongpassword2\",\n\t\"role\": \"student\"\n}"
+				},
+				"url": {
+					"raw": "localhost:3000/users/create",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sign In",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"student@harvard.edu\",\n\t\"password\": \"reallystrongpassword2\"\n}"
+				},
+				"url": {
+					"raw": "localhost:3000/users/signin",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"signin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Home",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:3000/",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Books",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "e2b83b1a-bf78-40df-bb0e-61152b76590a",
+						"exec": [
+							"const echoPostRequest = {",
+							"  url: 'http://localhost:3000/users/signin',",
+							"  method: 'POST',",
+							"  header: 'Content-Type:application/json',",
+							"  body: {",
+							"    mode: 'application/json',",
+							"    raw: JSON.stringify(",
+							"        {",
+							"        \temail:'student@harvard.edu',",
+							"        \tpassword:'reallystrongpassword2'",
+							"        })",
+							"  }",
+							"};",
+							"",
+							"var getToken = true;",
+							"",
+							"if (!pm.environment.get('accessTokenExpiry') || ",
+							"    !pm.environment.get('currentAccessToken')) {",
+							"    console.log('Token or expiry date are missing')",
+							"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+							"    console.log('Token is expired')",
+							"} else {",
+							"    getToken = false;",
+							"    console.log('Token and expiry date are all good');",
+							"}",
+							"",
+							"if (getToken === true) {",
+							"    pm.sendRequest(echoPostRequest, function (err, res) {",
+							"    console.log(err ? err : res.json());",
+							"        if (err === null) {",
+							"            console.log('Saving the token and expiry date')",
+							"            var responseJson = res.json();",
+							"            pm.environment.set('currentAccessToken', responseJson.data.token)",
+							"    ",
+							"            var expiryDate = new Date();",
+							"            expiryDate.setSeconds(expiryDate.getSeconds() + responseJson.expires_in);",
+							"            pm.environment.set('accessTokenExpiry', expiryDate.getTime());",
+							"        }",
+							"    });",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "edbefcc9-81b8-4a2b-a39f-0c7f679aedb6",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{currentAccessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:3000/books",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"books"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "8139618c-afd4-4089-8b53-9b80e8ce0047",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "4be51989-98b8-44ca-81d6-1a5a191a7e2c",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "7ee3c18d-4dde-44d5-885b-4e4fd0bce9be",
+			"key": "currentAccessToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "4f9ea2c7-9d00-42ea-886f-3bb0905b52ae",
+			"key": "accessTokenExpiry",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
