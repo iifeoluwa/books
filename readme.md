@@ -10,7 +10,7 @@ It is recommended to perform service requests using [Postman](https://www.getpos
 1. Clone this repository into a new directory.
 2. Open a terminal window in the directory where the project was cloned.
 3. Run `npm install` to install needed dependencies.
-4. Run `npm start" to start the app.
+4. Run `npm start` to start the app.
 4. Visit `localhost:3000` to access the running service.
 
 #### The /users/create endpoint
@@ -20,7 +20,8 @@ Sample Request Body:
 {
 	"name": "Mary John",
 	"email": "student@harvard.edu",
-	"password": "reallystrongpassword2"
+	"password": "reallystrongpassword2",
+   "role": "student"
 }
 ```
 #### The /user/signin endpoint
