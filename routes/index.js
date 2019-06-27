@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const passport = require('passport');
 
-const { create } = require('../controllers/user');
+const { create, fetchBooks } = require('../controllers/user');
 const { login } = require('../controllers/auth');
 
 const router = Router();
@@ -17,7 +17,7 @@ const index = (req, res, next) => {
 router.get('/', index);
 router.post('/users/create', create);
 router.post('/users/signin', login);
-router.post('/books', passport.authenticate('jwt', { session : false }), create);
+router.post('/books', passport.authenticate('jwt', { session : false }), fetchBooks);
 
 router.all('*', (req, res, next) =>
   res.status(404).jsend.error('You have reached a non-existent resource.')

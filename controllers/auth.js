@@ -16,13 +16,11 @@ const login = async (req, res, next) => {
           res.status(500).jsend.fail(error.message);
         }
         const body = { _id: user.id, email: user.email };
-        //Sign the JWT token and populate the payload with the user email and id
-        const token = jwt.sign({ user: body }, server.jwt_key);
-        //Send back the token to the user
+        const token = jwt.sign({ user: body }, server.jwt_key, {expiresIn: 60 });
         return res.status(200).jsend.success({token});
       });
     } catch (error) {
-      res.status(500).jsend.fail(error.message);
+      res.status(500).jsend.error(error.message);
     }
   })(req, res, next);
 }
