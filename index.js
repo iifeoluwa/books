@@ -7,24 +7,27 @@ const router = require("./routes");
 const { server } = require("./config");
 const { sequelize, createInitialInstitution } = require('./models');
 
+const isTestEnvironment = process.env.NODE_ENV === 'test';
 const app = express();
 
 require('./middleware/passport');
 
-// Body parser and helmet middleware
 app.use(helmet());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
+app.use(express.json())
 app.use(jsend.middleware);
 
 // Register app Routes
 app.use(router);
 
-sequelize.sync({force: true}).then(() => {
+if (isTestEnvironment) {
+  app.listen(server.port, () => console.log(`Server listening at ${server.port}`));
+} else {
+  sequelize.sync({ force: true }).then(() => {
     createInitialInstitution();
-    
+
     app.listen(server.port, () => console.log(`Server listening at ${server.port}`));
-});
+  });
+
+}
 
 module.exports = app;
