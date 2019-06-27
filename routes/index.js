@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const passport = require('passport');
 
+const { validateCreateData, validateLoginData } = require('../validations');
 const { create, fetchBooks } = require('../controllers/user');
 const { login } = require('../controllers/auth');
 
@@ -15,8 +16,8 @@ const index = (req, res, next) => {
 };
 
 router.get('/', index);
-router.post('/users/create', create);
-router.post('/users/signin', login);
+router.post('/users/create', validateCreateData, create);
+router.post('/users/signin', validateLoginData, login);
 router.post('/books', passport.authenticate('jwt', { session : false }), fetchBooks);
 
 router.all('*', (req, res, next) =>

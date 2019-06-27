@@ -37,7 +37,7 @@ const createInitialInstitution = async () => {
     include: models.Book
   });
 
-  harvard.addBooks()
+  harvard.addBooks();
 }
 
 module.exports = {
